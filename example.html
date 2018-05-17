@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+
+    <script>
+        
+        navigator
+            .serviceWorker
+            .register('./worker.js')
+            .then(res => {
+                console.log('COMPLETE', navigator.serviceWorker.active);
+                console.log(res)
+                fetch('test');
+
+            });
+
+    </script>
+
+    <script type="module">
+        console.log("ASDF");
+    </script>
+</head>
+<body>
+
+</body>
+</html>

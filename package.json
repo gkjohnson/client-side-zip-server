@@ -1,0 +1,24 @@
+{
+  "name": "browser-middleware",
+  "version": "1.0.0",
+  "description": "",
+  "main": "worker.js",
+  "dependencies": {},
+  "devDependencies": {
+    "jszip": "^3.1.5",
+    "static-server": "^2.2.1"
+  },
+  "scripts": {
+    "start": "static-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gkjohnson/browser-middleware.git"
+  },
+  "author": "Garrett Johnson <garrett.kjohnson@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gkjohnson/browser-middleware/issues"
+  },
+  "homepage": "https://github.com/gkjohnson/browser-middleware#readme"
+}
