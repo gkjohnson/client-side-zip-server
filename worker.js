@@ -1,20 +1,24 @@
 this.importScripts('./node_modules/jszip/dist/jszip.min.js');
 this.importScripts('./ZipResolver.js');
 
-let resolver;
-this.addEventListener('install', e => { });
+let resolver = new ZipResolver();
+this.addEventListener('install', e => {
+
+    this.skipWaiting();
+
+});
 
 this.addEventListener('activate', e => {
 
-    resolver = new ZipResolver();
+    console.log("ACTIVATINGGGG")
     e.waitUntil(this.clients.claim());
 
 });
 
+this.clients.claim()
+
 this.addEventListener('fetch', e => {
  
-    console.log("ASDFFETCH")
-
     const pr = resolver.retrieveFile(e.request.url);
     if (pr) {
 
@@ -22,7 +26,7 @@ this.addEventListener('fetch', e => {
             pr.then(buffer => {
 
                 const blob = new Blob([ buffer ]);
-                return Response(blob, { status: 200 });
+                return new Response(blob, { status: 200 });
 
             })
         );
@@ -36,6 +40,6 @@ this.addEventListener('fetch', e => {
 
 this.addEventListener('message', e => {
 
-    resolver.add(e.message.name, e.message.buffer);
+    resolver.add(e.data.name, e.data.buffer);
 
 });

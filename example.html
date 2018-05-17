@@ -3,22 +3,41 @@
 <head>
     <title></title>
 
-    <script>
-        
-        navigator
-            .serviceWorker
-            .register('./worker.js')
-            .then(res => {
-                console.log('COMPLETE', navigator.serviceWorker.active);
-                console.log(res)
-                fetch('test');
-
-            });
-
-    </script>
-
     <script type="module">
-        console.log("ASDF");
+        import './node_modules/jszip/dist/jszip.min.js'
+
+
+        const zip = new JSZip();
+        zip.file('test.py', 'hello!');
+        zip.file('/folder/file.txt', 'im in a folder!');
+
+        (async () => {
+            
+            const reg = await navigator.serviceWorker.register('./worker.js');
+
+            const _do = async () => {
+                const sw = reg.active;
+                
+                const ab = await zip.generateAsync({ type: 'arraybuffer' });
+                sw.postMessage({
+                    name: 'zip.zip',
+                    buffer: ab
+                });
+
+
+                fetch('test.py').then(res => res.text()).then(o => alert(o))
+
+            };
+
+            if (!reg.active) {
+                (reg.installing || reg.waiting)
+                    .addEventListener('statechange', () => _do());
+            } else {
+                _do();
+            }
+
+        })();
+
     </script>
 </head>
 <body>

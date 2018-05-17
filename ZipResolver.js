@@ -9,8 +9,15 @@ class ZipResolver {
 
         if (!name) return;
 
-        if (!buffer) this.remove(name);
-        else this._map[name] = new JSZip(buffer);
+        if (!buffer) {
+            this.remove(name);
+        } else {
+        
+            new JSZip()
+                .loadAsync(buffer)
+                .then(zip => this._map[name] = zip);
+
+        }
     
     }
 
@@ -35,7 +42,8 @@ class ZipResolver {
             // see if we can find the name of the file
             // at the provided path
             const zip = this._map[name];
-            const res = zip.file(pathReg);
+            const res = zip.file(pathReg).pop();
+
             if (res) return res.async("arraybuffer");
 
         }
