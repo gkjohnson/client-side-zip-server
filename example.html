@@ -22,7 +22,7 @@
                 sw.postMessage({
                     name: 'zip.zip',
                     buffer: ab
-                });
+                }, [ ab ]);
 
 
                 fetch('test.py').then(res => res.text()).then(o => alert(o))
