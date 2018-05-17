@@ -1,6 +1,7 @@
 this.importScripts('./node_modules/jszip/dist/jszip.min.js');
 this.importScripts('./ZipResolver.js');
 
+this.clients.claim()
 let resolver = new ZipResolver();
 this.addEventListener('install', e => {
 
@@ -10,12 +11,10 @@ this.addEventListener('install', e => {
 
 this.addEventListener('activate', e => {
 
-    console.log("ACTIVATINGGGG")
     e.waitUntil(this.clients.claim());
 
 });
 
-this.clients.claim()
 
 this.addEventListener('fetch', e => {
  
@@ -30,6 +29,7 @@ this.addEventListener('fetch', e => {
 
             })
         );
+        
     } else { 
 
         return e.request;
