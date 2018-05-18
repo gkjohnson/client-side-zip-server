@@ -79,9 +79,7 @@ class ZipServer {
 
         if (buffer instanceof ArrayBuffer && transfer) transferable.push(buffer);
         
-        console.log('TRANSFERRING', buffer, id);
         this.serviceWorker.postMessage({ id, buffer }, transferable);
-
         this._ids.push(id);
 
         return {
@@ -101,8 +99,16 @@ class ZipServer {
 
         }
 
+        const index = this._ids.indexOf(id);
+        if (!index === -1) {
+
+            throw new Error(`Id ${ id } not a registered zip file`);
+
+        }
+
         // remove the buffer
         this._serviceWorker.postMessage({ id, buffer: null });
+        this._ids.splice(index, 1);
 
     }
 
