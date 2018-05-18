@@ -1,10 +1,16 @@
+// Holds a list of zip files to test when resolving
+// a request to retrieve a file path
+
 class ZipResolver {
 
     constructor() {
+
         this._map = {};
+
     }
 
     /* Public API */
+    // Adds a zip buffer with the provided id
     add(id, buffer) {
 
         if (!id) return;
@@ -21,6 +27,7 @@ class ZipResolver {
     
     }
 
+    // Removes a zip with the provided id
     remove(id) {
 
         if (!id) return;
@@ -29,6 +36,10 @@ class ZipResolver {
     
     }
 
+    // Retrieves a file at the given path. If `strict` is enabled, then
+    // the file path must match exactly in the zip file. Otherwise, the path
+    // is progressively shortened until a file is found. Retursn a promise
+    // that resolves with the file data, null if no file is found.
     retrieveFile(path, strict = false) {
 
         // normalize the path

@@ -1,12 +1,17 @@
+// Creates a ServiceWorker to intercept requests and serve
+// files from zip files instead.
+
 window.ZipServer =
 class ZipServer {
 
+    // Generate a 9 digit random id
     static _generateId() {
 
         return Math.random().toString(36).substr(2, 9);
 
     }
 
+    // Returns the URL to load the worker script from
     static get _getWorkerUrl() {
 
         if (!this._workerUrl) {
@@ -19,6 +24,8 @@ class ZipServer {
 
     }
 
+    // the associated worker and whether or not the worker
+    // is ready to handle requests
     get ready() { return !!this._serviceWorker; }
     get serviceWorker() { return this._serviceWorker; }
 
@@ -33,6 +40,8 @@ class ZipServer {
     }
 
     /* Public API */
+    // Returns a promise that resolves with the service worker
+    // once it is registered and ready 
     register() {
 
         return new Promise((resolve, reject) => {
@@ -52,6 +61,8 @@ class ZipServer {
 
     }
 
+    // Unregisters ther service. This will unregister it from any
+    // shared clients, as well.
     unregister() {
 
         if (!this.serviceWorker) {
@@ -65,6 +76,11 @@ class ZipServer {
 
     }
 
+    // Takes a buffer representing a zip file to serve files from. If the
+    // data is an ArrayBuffer and `transfer` == true, then the buffer is
+    // transferred to the worker and will no longer be accessible.
+
+    // Returns a handle with an id and dispose function for removing the zip
     add(buffer, transfer = true) {
 
         if (!this.ready) {
@@ -91,6 +107,7 @@ class ZipServer {
 
     }
 
+    // Removes the zip file with the provided id from being served
     remove(id) {
 
         if (!this.ready) {
@@ -112,6 +129,7 @@ class ZipServer {
         
     }
 
+    // Clears all the registered zip files being served from this client instance
     clearAll() {
 
         this._ids.forEach(n => this.remove(n));

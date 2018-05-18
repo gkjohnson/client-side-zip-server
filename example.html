@@ -14,7 +14,7 @@
 
                 const zip = new JSZip();
                 zip.file('test.text', 'hello!');
-                zip.file('/folder/file.txt', 'im in a folder!');
+                zip.file('/folder/file.txt', 'I\'m in a folder!');
 
                 return zip.generateAsync({ type: 'arraybuffer' });
 
