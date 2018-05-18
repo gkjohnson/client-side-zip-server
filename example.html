@@ -11,17 +11,20 @@
         zs
             .register()
             .then(() => {
+
                 const zip = new JSZip();
-                zip.file('test.py', 'hello!');
+                zip.file('test.text', 'hello!');
                 zip.file('/folder/file.txt', 'im in a folder!');
 
                 return zip.generateAsync({ type: 'arraybuffer' });
+
             })
             .then(b => {
 
                 const id = zs.add(b).id;
-                fetch('test.py').then(res => res.text()).then(o => console.log('do', o))
-                requestAnimationFrame(() => zs.remove(id));
+                fetch('test.py').then(res => res.text()).then(o => console.log(o))
+                fetch('/folder/file.txt').then(res => res.text()).then(o => console.log(o))
+                zs.remove(id);
 
             });
 

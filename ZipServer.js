@@ -106,10 +106,10 @@ class ZipServer {
 
         }
 
-        // remove the buffer
-        this._serviceWorker.postMessage({ id, buffer: null });
+        // remove the buffer on the next frame so requests have a chance to resolve
+        requestAnimationFrame(() => this._serviceWorker.postMessage({ id, buffer: null }));
         this._ids.splice(index, 1);
-
+        
     }
 
     clearAll() {
