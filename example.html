@@ -4,39 +4,26 @@
     <title></title>
 
     <script type="module">
+        import './ZipServer.js'
         import './node_modules/jszip/dist/jszip.min.js'
 
+        const zs = new ZipServer();
+        zs
+            .register()
+            .then(() => {
+                const zip = new JSZip();
+                zip.file('test.py', 'hello!');
+                zip.file('/folder/file.txt', 'im in a folder!');
 
-        const zip = new JSZip();
-        zip.file('test.py', 'hello!');
-        zip.file('/folder/file.txt', 'im in a folder!');
+                return zip.generateAsync({ type: 'arraybuffer' });
+            })
+            .then(b => {
 
-        (async () => {
-            
-            const reg = await navigator.serviceWorker.register('./zipServerWorker.js');
+                const id = zs.add(b).id;
+                fetch('test.py').then(res => res.text()).then(o => console.log('do', o))
+                requestAnimationFrame(() => zs.remove(id));
 
-            const _do = async () => {
-                const sw = reg.active;
-                
-                const ab = await zip.generateAsync({ type: 'arraybuffer' });
-                sw.postMessage({
-                    name: 'zip.zip',
-                    buffer: ab
-                }, [ ab ]);
-
-
-                fetch('test.py').then(res => res.text()).then(o => alert(o))
-
-            };
-
-            if (!reg.active) {
-                (reg.installing || reg.waiting)
-                    .addEventListener('statechange', () => _do());
-            } else {
-                _do();
-            }
-
-        })();
+            });
 
     </script>
 </head>

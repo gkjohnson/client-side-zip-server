@@ -1,3 +1,4 @@
+window.ZipServer =
 class ZipServer {
 
     static _generateId() {
@@ -6,10 +7,10 @@ class ZipServer {
 
     }
 
-    static _getWorkerUrl() {
+    static get _getWorkerUrl() {
 
         if (!this._workerUrl) {
-            const el = document.create('a');
+            const el = document.createElement('a');
             el.href = './zipServerWorker.js';
             this._workerUrl = el.href;
         }
@@ -25,28 +26,33 @@ class ZipServer {
 
         this._ids = [];
         this._serviceWorker = null;
-        this._id = this._generateId();
+        this._id = ZipServer._generateId();
 
         // before unload, clear all files
         window.addEventListener('beforeunload', () => this.clear());
     }
 
     /* Public API */
-    async register() {
+    register() {
 
         return new Promise((resolve, reject) => {
-            const reg = await navigator.serviceWorker.register(this._getWorkerUrl);
-            if (!reg.active) {
-                (reg.installing || reg.waiting)
-                    .addEventListener('statechange', () => resolve(reg.active));
-            } else {
-                requestAnimationFrame(() => resolve(reg.active));
-            }
+            navigator.serviceWorker.register(ZipServer._getWorkerUrl).then(reg => {
+                if (!reg.active) {
+                    (reg.installing || reg.waiting)
+                        .addEventListener('statechange', () => {
+                            this._serviceWorker = reg.active;
+                            resolve(reg.active)
+                        });
+                } else {
+                    this._serviceWorker = reg.active;
+                    requestAnimationFrame(() => resolve(reg.active));
+                }
+            });
         });
 
     }
 
-    async unregister() {
+    unregister() {
 
         if (!this.serviceWorker) {
 
@@ -72,7 +78,9 @@ class ZipServer {
         const transferable = [];
 
         if (buffer instanceof ArrayBuffer && transfer) transferable.push(buffer);
-        this._serviceWorker.postMessage({ id, buffer }, transferable);
+        
+        console.log('TRANSFERRING', buffer, id);
+        this.serviceWorker.postMessage({ id, buffer }, transferable);
 
         this._ids.push(id);
 
@@ -108,9 +116,9 @@ class ZipServer {
     _generateFileId() {
 
         let id;
-        while (id && this._ids.indexOf(id) !== -1) {
+        while (!id || this._ids.indexOf(id) !== -1) {
 
-            id = `${ this._id }_${ this._generateId() }`;
+            id = `${ this._id }_${ ZipServer._generateId() }`;
 
         }
 

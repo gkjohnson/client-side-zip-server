@@ -5,27 +5,27 @@ class ZipResolver {
     }
 
     /* Public API */
-    add(name, buffer) {
+    add(id, buffer) {
 
-        if (!name) return;
+        if (!id) return;
 
         if (!buffer) {
-            this.remove(name);
+            this.remove(id);
         } else {
         
             new JSZip()
                 .loadAsync(buffer)
-                .then(zip => this._map[name] = zip);
+                .then(zip => this._map[id] = zip);
 
         }
     
     }
 
-    remove(name) {
+    remove(id) {
 
-        if (!name) return;
+        if (!id) return;
 
-        delete this._map[name];
+        delete this._map[id];
     
     }
 
@@ -37,11 +37,11 @@ class ZipResolver {
 
         // iterate over every zip
         const pathReg = new RegExp(`${path}$`);
-        for (const name in this._map) {
+        for (const id in this._map) {
 
-            // see if we can find the name of the file
+            // see if we can find the id of the file
             // at the provided path
-            const zip = this._map[name];
+            const zip = this._map[id];
             const res = zip.file(pathReg).pop();
 
             if (res) return res.async("arraybuffer");
