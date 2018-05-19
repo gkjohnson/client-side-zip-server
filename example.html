@@ -21,7 +21,7 @@
             })
             .then(b => {
 
-                const id = zs.add(b).id;
+                const id = zs.addZip(b).id;
                 fetch('test.txt').then(res => res.text()).then(o => console.log(o))
                 fetch('/folder/file.txt').then(res => res.text()).then(o => console.log(o))
                 setTimeout(() => zs.remove(id), 100);
