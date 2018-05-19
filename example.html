@@ -24,7 +24,7 @@
                 const id = zs.add(b).id;
                 fetch('test.txt').then(res => res.text()).then(o => console.log(o))
                 fetch('/folder/file.txt').then(res => res.text()).then(o => console.log(o))
-                zs.remove(id);
+                setTimeout(() => zs.remove(id), 100);
 
             });
 
