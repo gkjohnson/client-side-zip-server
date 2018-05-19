@@ -1,8 +1,7 @@
 {
-  "name": "browser-middleware",
-  "version": "1.0.0",
-  "description": "",
-  "main": "worker.js",
+  "name": "client-side-zip-server",
+  "version": "0.0.1",
+  "description": "Intercepting fetch requests and serving zip file data from a ServiceWorker.",
   "dependencies": {},
   "devDependencies": {
     "jszip": "^3.1.5",
@@ -13,12 +12,26 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gkjohnson/browser-middleware.git"
+    "url": "git+https://github.com/gkjohnson/client-side-zip-server.git"
   },
   "author": "Garrett Johnson <garrett.kjohnson@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/gkjohnson/browser-middleware/issues"
+    "url": "https://github.com/gkjohnson/client-side-zip-server/issues"
   },
-  "homepage": "https://github.com/gkjohnson/browser-middleware#readme"
+  "homepage": "https://github.com/gkjohnson/client-side-zip-server#readme",
+  "keywords": [
+    "service",
+    "service-worker",
+    "middleware",
+    "client",
+    "client-side",
+    "browser",
+    "javascript",
+    "serviceworker",
+    "zip",
+    "intercept",
+    "fetch",
+    "request"
+  ]
 }
