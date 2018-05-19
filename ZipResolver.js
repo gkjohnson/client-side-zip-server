@@ -3,6 +3,9 @@
 
 class ZipResolver {
 
+    get count() { return Object.keys(this._map).length; }
+    get empty() { return this.count === 0; }
+
     constructor() {
 
         this._map = {};
@@ -16,9 +19,12 @@ class ZipResolver {
         if (!id) return;
 
         if (!buffer) {
+
             this.remove(id);
+        
         } else {
         
+            this._map[id] = null;
             new JSZip()
                 .loadAsync(buffer)
                 .then(zip => this._map[id] = zip);

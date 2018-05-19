@@ -1,7 +1,8 @@
 this.importScripts('./node_modules/jszip/dist/jszip.min.js');
 this.importScripts('./ZipResolver.js');
 
-let resolver = new ZipResolver();
+const resolvers = {};
+const disabled = {};
 this.addEventListener('install', e => {
 
     // activate immediately so we can start serving
@@ -20,7 +21,9 @@ this.addEventListener('fetch', e => {
 
     // Check if a file is available in one of the zip
     // files and return that instead
-    const pr = resolver.retrieveFile(e.request.url);
+    const r = resolvers[e.clientId];
+    const pr = r && !disabled[e.clientId] ? r.retrieveFile(e.request.url) : null;
+
     if (pr) {
 
         e.respondWith(
@@ -44,6 +47,16 @@ this.addEventListener('fetch', e => {
 // to remove the zip file
 this.addEventListener('message', e => {
 
-    resolver.add(e.data.id, e.data.buffer);
+    resolvers[e.source.id] = resolvers[e.source.id] || new ZipResolver();
+    
+    const r = resolvers[e.source.id];
+    r.add(e.data.id, e.data.buffer);
+
+    if (r.empty) delete resolvers[e.source.id];
+
+    if ('disabled' in e.data) {
+        if (e.data.disabled) disabled[e.source.id] = true;
+        else delete disabled[e.source.id];
+    }
 
 });
