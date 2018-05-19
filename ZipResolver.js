@@ -42,6 +42,8 @@ class ZipResolver {
     // that resolves with the file data, null if no file is found.
     retrieveFile(path, strict = false) {
 
+        if (!path) return null;
+
         // normalize the path
         // we assume the path does not have any up-directory requests
         path = path.replace(/\\/g, '/');
