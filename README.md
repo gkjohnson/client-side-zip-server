@@ -68,13 +68,17 @@ Registers a service worker for the zip service. If an equivelant service worker 
 
 Unregisters the worker if it has been registered. Keep in mind that service workers are shared across open webpages, so this could cause other pages to stop working. This should only be used when the the service should be uninstalled for good.
 
-#### add(ArrayBuffer, transfer = true)
+#### addZip(ArrayBuffer, transfer = true)
 
 Registers the the zip file data with the request interceptor service so the data can be served. This makes the data accessible across all clients controlled by the zip service worker.
 
 If `transfer` is true and the data is an ArrayBuffer, then it's ownership is transferred to the service worker, making it unavailable in the main thread.
 
 Returns an object of the form `{ id, dispose }`. Call `dispose` to remove the zip file from the service.
+
+#### addDataTransfer(dataTransfer)
+
+Creates a zip from a [DataTransfer](https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer) object. This can be used to create and serve files that were dragged onto the page and captured using the `'drop'` event.
 
 #### remove(id)
 
