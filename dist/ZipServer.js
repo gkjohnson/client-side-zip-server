@@ -185,7 +185,9 @@ class ZipServer {
 
     }
 
-    addDataTransfer(data) {
+    // Create a zip based on a dataTransfer object retrieved from an event like
+    // draggin and dropping of files.
+    addDataTransfer(dataTransfer) {
 
         if (!this.ready) {
 
@@ -194,7 +196,7 @@ class ZipServer {
         }
 
         return ZipServer
-            ._dataTransferToZip(data)
+            ._dataTransferToZip(dataTransfer)
             .then(zip => this.addZip(zip));
 
     }
