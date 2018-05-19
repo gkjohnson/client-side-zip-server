@@ -30,7 +30,7 @@ zs
         
         // Add the file, save the id so it can be removed after
         // the requests are made
-        const id = zs.add(b).id;
+        const id = zs.addZip(b).id;
         fetch('test.py').then(res => res.text()).then(o => console.log(o))
         fetch('/folder/file.txt').then(res => res.text()).then(o => console.log(o))
         zs.remove(id);
