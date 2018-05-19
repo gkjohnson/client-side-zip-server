@@ -13,7 +13,7 @@
             .then(() => {
 
                 const zip = new JSZip();
-                zip.file('test.text', 'hello!');
+                zip.file('test.txt', 'hello!');
                 zip.file('/folder/file.txt', 'I\'m in a folder!');
 
                 return zip.generateAsync({ type: 'arraybuffer' });
@@ -22,7 +22,7 @@
             .then(b => {
 
                 const id = zs.add(b).id;
-                fetch('test.py').then(res => res.text()).then(o => console.log(o))
+                fetch('test.txt').then(res => res.text()).then(o => console.log(o))
                 fetch('/folder/file.txt').then(res => res.text()).then(o => console.log(o))
                 zs.remove(id);
 

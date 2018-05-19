@@ -36,7 +36,7 @@ class ZipServer {
         this._id = ZipServer._generateId();
 
         // before unload, clear all files
-        window.addEventListener('beforeunload', () => this.clear());
+        window.addEventListener('beforeunload', () => this.clearAll());
     }
 
     /* Public API */
