@@ -28,6 +28,11 @@ class ZipServer {
     // is ready to handle requests
     get ready() { return !!this._serviceWorker; }
     get serviceWorker() { return this._serviceWorker; }
+    get enabled() { return !this._disabled; }
+    set enabled(enabled) { 
+        this._disabled = !enabled;
+        if (this._serviceWorker) this._serviceWorker.postMessage({ disabled: !enabled });
+    }
 
     constructor() {
 
@@ -50,10 +55,12 @@ class ZipServer {
                     (reg.installing || reg.waiting)
                         .addEventListener('statechange', () => {
                             this._serviceWorker = reg.active;
+                            this.enabled = this.enabled;
                             resolve(reg.active)
                         });
                 } else {
                     this._serviceWorker = reg.active;
+                    this.enabled = this.enabled;
                     requestAnimationFrame(() => resolve(reg.active));
                 }
             });
