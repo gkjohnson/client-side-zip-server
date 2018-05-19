@@ -54,6 +54,12 @@ If a service worker is already being employed, then the `ZipResolver` class can 
 
 Getter indicating whether the service is ready to be used and intercept requests.
 
+#### enabled
+
+Getter / Setter for toggling serving zip files. If set to `false`, files from the zip folders will _not_ be resolved (though the files will not be removed). Set the `true` to reenable serving.
+
+NOTE: This setting is optimistic and assumes nothing else has changed the enabled state in the ServiceWorker. If another client causes the ServiceWorker to be restarted then this setting could be out of sync.
+
 #### register()
 
 Registers a service worker for the zip service. If an equivelant service worker is already registered, then it uses the existing worker. If a different worker is registered, then the other worker is unregistered.
